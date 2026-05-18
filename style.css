@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  background: black;
+  color: #f5d06f;
+  font-family: sans-serif;
+}
+
+.container {
+  text-align: center;
+  margin-top: 150px;
+}
+
+h1 {
+  font-size: 48px;
+  letter-spacing: 4px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
