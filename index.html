@@ -2,16 +2,64 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>我的个人网站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>傻逼 · Portfolio</title>
+
   <link rel="stylesheet" href="style.css" />
+
+  <!-- 字体（高级感关键） -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>傻逼 · 个人网站</h1>
-    <p>我是傻逼视觉传达设计师</p>
-    <button onclick="showMessage()">点击我</button>
-  </div>
+  <!-- 鼠标光标 -->
+  <div class="cursor"></div>
+
+  <!-- 顶部导航 -->
+  <header class="nav">
+    <div class="logo">傻逼</div>
+    <div class="nav-links">
+      <a href="#">Work</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+  </header>
+
+  <!-- 首屏 -->
+  <section class="hero">
+    <h1 class="hero-title">
+      Visual Designer<br/>
+      Minimal · Motion · System
+    </h1>
+
+    <p class="hero-sub">
+      A curated portfolio focused on clarity, rhythm and interaction.
+    </p>
+  </section>
+
+  <!-- 项目区 -->
+  <section class="projects">
+
+    <div class="card">
+      <div class="card-inner">
+        <h2>Project One</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+        <h2>Project Two</h2>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+        <h2>Project Three</h2>
+      </div>
+    </div>
+
+  </section>
 
   <script src="script.js"></script>
 </body>

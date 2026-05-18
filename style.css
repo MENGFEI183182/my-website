@@ -1,25 +1,115 @@
-body {
+* {
   margin: 0;
-  background: black;
-  color: #f5d06f;
-  font-family: sans-serif;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container {
-  text-align: center;
-  margin-top: 150px;
+body {
+  background: #0a0a0a;
+  color: #eaeaea;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
 }
 
-h1 {
-  font-size: 48px;
-  letter-spacing: 4px;
+/* 鼠标光圈 */
+.cursor {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
 }
 
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: red;
-  border: none;
+/* 导航 */
+.nav {
+  position: fixed;
+  width: 100%;
+  padding: 30px 60px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.nav a {
+  margin-left: 30px;
+  color: #aaa;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav a:hover {
   color: white;
+}
+
+/* 首屏 */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 60px;
+}
+
+.hero-title {
+  font-size: 64px;
+  line-height: 1.2;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 1.2s ease forwards;
+}
+
+.hero-sub {
+  margin-top: 20px;
+  color: #777;
+  opacity: 0;
+  animation: fadeUp 1.5s ease forwards;
+}
+
+/* 项目区 */
+.projects {
+  padding: 100px 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.card {
+  height: 300px;
+  background: #111;
+  overflow: hidden;
+  position: relative;
   cursor: pointer;
+}
+
+.card-inner {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  transition: 0.4s;
+}
+
+.card:hover .card-inner {
+  transform: scale(1.05);
+}
+
+.card h2 {
+  font-size: 20px;
+}
+
+/* 动画 */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
