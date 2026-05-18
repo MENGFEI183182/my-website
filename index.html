@@ -1,66 +1,97 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>傻逼 · Portfolio</title>
-
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- 字体（高级感关键） -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视觉传达设计师 | 个人作品集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-  <!-- 鼠标光标 -->
-  <div class="cursor"></div>
+    <div class="ambient-light"></div>
 
-  <!-- 顶部导航 -->
-  <header class="nav">
-    <div class="logo">傻逼</div>
-    <div class="nav-links">
-      <a href="#">Work</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </div>
-  </header>
+    <nav>
+        <div class="logo">VCD.</div>
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#works">作品</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </nav>
 
-  <!-- 首屏 -->
-  <section class="hero">
-    <h1 class="hero-title">
-      Visual Designer<br/>
-      Minimal · Motion · System
-    </h1>
+    <section id="home" class="hero">
+        <div class="hero-content fade-up">
+            <p class="subtitle">Visual Communication Designer</p>
+            <h1 class="title">
+                塑造<span class="gradient-text">视觉</span><br>
+                传递<span class="gradient-text">感知</span>
+            </h1>
+            <p class="description">探索设计与艺术的边界，用极致的视觉语言讲述属于你的品牌故事。</p>
+            <a href="#works" class="cta-btn">探索作品集</a>
+        </div>
+    </section>
 
-    <p class="hero-sub">
-      A curated portfolio focused on clarity, rhythm and interaction.
-    </p>
-  </section>
+    <section id="works" class="works-section">
+        <div class="section-header fade-up">
+            <h2>精选作品</h2>
+            <p>Selected Works</p>
+        </div>
+        
+        <div class="works-grid">
+            <div class="work-card fade-up">
+                <div class="work-img" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');"></div>
+                <div class="work-info">
+                    <h3>品牌视觉升级</h3>
+                    <p>Branding / 2025</p>
+                </div>
+            </div>
+            <div class="work-card fade-up">
+                <div class="work-img" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2564&auto=format&fit=crop');"></div>
+                <div class="work-info">
+                    <h3>空间数字艺术</h3>
+                    <p>Digital Art / 2024</p>
+                </div>
+            </div>
+            <div class="work-card fade-up">
+                <div class="work-img" style="background-image: url('https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?q=80&w=2564&auto=format&fit=crop');"></div>
+                <div class="work-info">
+                    <h3>先锋排版实验</h3>
+                    <p>Typography / 2024</p>
+                </div>
+            </div>
+            <div class="work-card fade-up">
+                <div class="work-img" style="background-image: url('https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2564&auto=format&fit=crop');"></div>
+                <div class="work-info">
+                    <h3>UI/UX 体验重塑</h3>
+                    <p>Web Design / 2025</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- 项目区 -->
-  <section class="projects">
+    <section id="about" class="about-section fade-up">
+        <div class="about-content">
+            <h2>设计即<span class="gradient-text">沟通</span></h2>
+            <p>我是一名专注于视觉传达与数字体验的设计师。我相信优秀的设计不仅仅是视觉上的享受，更是信息的精准触达。通过字体、色彩、空间与动效的精密编排，我致力于为每一个项目注入灵魂。</p>
+        </div>
+    </section>
 
-    <div class="card">
-      <div class="card-inner">
-        <h2>Project One</h2>
-      </div>
-    </div>
+    <footer id="contact" class="fade-up">
+        <h2>准备好合作了吗？</h2>
+        <a href="mailto:hello@example.com" class="email-link">hello@example.com</a>
+        <div class="socials">
+            <a href="#">Behance</a>
+            <a href="#">Dribbble</a>
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+        </div>
+        <p class="copyright">&copy; 2026 Visual Communication Designer. All rights reserved.</p>
+    </footer>
 
-    <div class="card">
-      <div class="card-inner">
-        <h2>Project Two</h2>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-inner">
-        <h2>Project Three</h2>
-      </div>
-    </div>
-
-  </section>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
