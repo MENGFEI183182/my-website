@@ -1,67 +1,90 @@
-// 等待DOM加载完成
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. 自定义鼠标指针逻辑 (PC端)
+    // 1. 首页文字遮罩入场动画
+    setTimeout(() => {
+        document.querySelector('.hero').classList.add('loaded');
+    }, 100); // 稍微延迟，确保渲染完成
+
+    // 2. 自定义鼠标平滑跟随
     const cursor = document.querySelector('.cursor');
     const follower = document.querySelector('.cursor-follower');
-    const links = document.querySelectorAll('a, .work-card'); // 悬浮变大的目标
+    let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
 
-    let mouseX = 0, mouseY = 0;
-    let followerX = 0, followerY = 0;
-
-    // 监听鼠标移动
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
-        // 核心点直接跟随
-        cursor.style.left = mouseX + 'px';
-        cursor.style.top = mouseY + 'px';
+        cursor.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
     });
 
-    // 使用 requestAnimationFrame 让光圈平滑跟随 (产生阻尼感/延迟感)
-    function animate() {
-        followerX += (mouseX - followerX) * 0.1;
-        followerY += (mouseY - followerY) * 0.1;
-        
-        follower.style.left = followerX + 'px';
-        follower.style.top = followerY + 'px';
-        
-        requestAnimationFrame(animate);
+    function animateCursor() {
+        // 利用线性插值 (Lerp) 实现如丝般顺滑的跟随阻尼感
+        followerX += (mouseX - followerX) * 0.15;
+        followerY += (mouseY - followerY) * 0.15;
+        follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+        requestAnimationFrame(animateCursor);
     }
-    animate();
+    animateCursor();
 
-    // 鼠标悬浮在可点击元素上的放大特效
-    links.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            cursor.classList.add('active');
-            follower.classList.add('active');
+    // 3. 高级交互：磁性吸附 (Magnetic Effect)
+    const magnetics = document.querySelectorAll('.magnetic');
+    
+    magnetics.forEach(btn => {
+        // 鼠标悬停放大光标
+        btn.addEventListener('mouseenter', () => {
+            follower.classList.add('hovering');
         });
-        link.addEventListener('mouseleave', () => {
-            cursor.classList.remove('active');
-            follower.classList.remove('active');
+        btn.addEventListener('mouseleave', () => {
+            follower.classList.remove('hovering');
+            // 鼠标移出时归位
+            btn.style.transform = 'translate(0px, 0px)';
+        });
+
+        // 核心磁性逻辑
+        btn.addEventListener('mousemove', (e) => {
+            const position = btn.getBoundingClientRect();
+            // 计算鼠标在元素内部的相对中心坐标
+            const x = e.pageX - position.left - position.width / 2;
+            const y = e.pageY - position.top - position.height / 2;
+            
+            // 移动元素本身 (乘以一个系数降低移动幅度，显得高级)
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.4}px)`;
         });
     });
 
-    // 2. 滚动视差与出现动画 (Intersection Observer API)
-    // 监控页面中所有带有 .fade-up 类的元素
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 // 当元素 15% 进入视口时触发
-    };
+    // 为所有可点击元素添加鼠标悬停状态
+    document.querySelectorAll('a, .work-card').forEach(el => {
+        if(!el.classList.contains('magnetic')) {
+            el.addEventListener('mouseenter', () => follower.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => follower.classList.remove('hovering'));
+        }
+    });
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    // 4. 滚动动画 (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // 添加可见类触发 CSS 动画
                 entry.target.classList.add('visible');
-                // 触发一次后取消观察，提升性能
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    const fadeElements = document.querySelectorAll('.fade-up');
-    fadeElements.forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // 5. 高级交互：图片视差滚动 (Parallax Scrolling)
+    const parallaxImages = document.querySelectorAll('.parallax-img');
+    
+    window.addEventListener('scroll', () => {
+        let scrollY = window.pageYOffset;
+        
+        parallaxImages.forEach(img => {
+            // 获取图片容器离页面顶部的距离
+            const imgTop = img.parentElement.offsetTop;
+            // 计算视差偏移量，数值越小视差越弱，越自然
+            const yPos = (scrollY - imgTop) * 0.15; 
+            
+            // 为了防止图片滚出容器，我们使用 transformY，配合 CSS 中 120% 的高度
+            img.style.transform = `translateY(${yPos}px)`;
+        });
+    });
 });

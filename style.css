@@ -1,79 +1,114 @@
-/* --- 基础重置与变量定义 --- */
+/* --- 基础重置 --- */
 :root {
-    --bg-color: #050505;
-    --text-main: #ffffff;
-    --text-muted: #888888;
-    --accent-gradient: linear-gradient(135deg, #FF3366 0%, #FF9933 100%);
-    --font-heading: 'Syne', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --bg-color: #030303; /* 极致的深黑 */
+    --text-main: #f0f0f0;
+    --text-muted: #666666;
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif; /* 高级衬线体用于特定强调 */
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* 隐藏默认鼠标，使用自定义指针 */
+    cursor: none; /* 全局隐藏鼠标 */
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     overflow-x: hidden;
-    line-height: 1.6;
+    -webkit-font-smoothing: antialiased; /* 字体抗锯齿，苹果系统尤为明显 */
 }
 
-html {
-    scroll-behavior: smooth;
+/* --- 高级视觉层：胶片噪点 --- */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.05;
+    /* 利用 SVG 生成极简噪点 */
+    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
 }
 
-/* --- 自定义鼠标指针 --- */
+/* --- 高级视觉层：极光流体背景 --- */
+.aurora-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+    background: var(--bg-color);
+}
+
+.aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.4;
+    animation: float 20s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 60vw;
+    height: 60vw;
+    background: #2a1142; /* 深紫 */
+    top: -20%;
+    left: -10%;
+}
+
+.blob-2 {
+    width: 50vw;
+    height: 50vw;
+    background: #0d2836; /* 深蓝绿 */
+    bottom: -20%;
+    right: -10%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(10%, 15%) scale(1.2); }
+}
+
+/* --- 自定义光标 (更灵敏的跟随) --- */
 .cursor {
     position: fixed;
-    width: 8px;
-    height: 8px;
-    background: #fff;
+    width: 6px;
+    height: 6px;
+    background: var(--text-main);
     border-radius: 50%;
     pointer-events: none;
+    z-index: 10000;
     transform: translate(-50%, -50%);
-    z-index: 9999;
-    transition: transform 0.2s ease;
+    mix-blend-mode: difference; /* 反色效果，非常高端 */
 }
 
 .cursor-follower {
     position: fixed;
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 50%;
     pointer-events: none;
-    transform: translate(-50%, -50%);
     z-index: 9998;
+    transform: translate(-50%, -50%);
     transition: width 0.3s, height 0.3s, background 0.3s;
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cursor.active {
-    transform: translate(-50%, -50%) scale(0);
-}
-.cursor-follower.active {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(2px);
-}
-
-/* --- 背景环境光效 --- */
-.ambient-light {
-    position: fixed;
-    top: -20%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: radial-gradient(circle, rgba(255,51,102,0.15) 0%, rgba(0,0,0,0) 70%);
-    z-index: -1;
-    pointer-events: none;
-    filter: blur(80px);
+.cursor-follower.hovering {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border-color: transparent;
 }
 
 /* --- 导航栏 --- */
@@ -81,93 +116,99 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 30px 5%;
+    padding: 40px 6%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    background: linear-gradient(to bottom, rgba(5,5,5,0.9), transparent);
-    backdrop-filter: blur(10px);
+    mix-blend-mode: difference;
 }
 
 .logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
+    font-size: 1.2rem;
     letter-spacing: 2px;
+    display: inline-block; /* 磁性吸附必须 */
 }
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 40px;
+    gap: 50px;
 }
 
 .nav-links a {
     color: var(--text-main);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
+    letter-spacing: 1.5px;
+    display: inline-block;
 }
 
-.nav-links a:hover {
-    color: #FF3366;
-}
-
-/* --- 首页主视觉 (Hero) --- */
+/* --- 首页 (排版冲击力) --- */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     padding: 0 10%;
-    position: relative;
+}
+
+.reveal-text-container {
+    overflow: hidden; /* 核心：遮罩隐藏外围 */
+    margin-bottom: 10px;
+}
+
+.reveal-text {
+    transform: translateY(100%);
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.hero.loaded .reveal-text {
+    transform: translateY(0);
 }
 
 .subtitle {
-    font-family: var(--font-body);
     color: var(--text-muted);
-    text-transform: uppercase;
     letter-spacing: 4px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
     margin-bottom: 20px;
 }
 
 .title {
-    font-family: var(--font-heading);
-    font-size: 5vw;
-    line-height: 1.1;
+    font-family: var(--font-serif);
+    font-size: 8vw;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.title-en {
+    font-size: 4vw;
+    font-weight: 300;
+    color: var(--text-muted);
     margin-bottom: 30px;
 }
 
-.gradient-text {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-}
-
 .description {
-    max-width: 500px;
+    max-width: 450px;
     color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
     margin-bottom: 50px;
-    font-size: 1.1rem;
 }
 
 .cta-btn {
     display: inline-block;
-    padding: 15px 40px;
-    border: 1px solid var(--text-main);
+    padding: 16px 40px;
+    border: 1px solid rgba(255,255,255,0.3);
     color: var(--text-main);
     text-decoration: none;
-    border-radius: 30px;
-    font-family: var(--font-heading);
+    border-radius: 50px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
+    font-size: 0.85rem;
+    transition: background 0.4s, color 0.4s;
 }
 
 .cta-btn:hover {
@@ -175,159 +216,147 @@ nav {
     color: var(--bg-color);
 }
 
-/* --- 作品集区块 --- */
+.fade-in-delay {
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards ease-in-out;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* --- 作品集区块 (反常规网格) --- */
 .works-section {
-    padding: 100px 5%;
+    padding: 150px 6%;
 }
 
 .section-header {
-    text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 100px;
 }
 
 .section-header h2 {
-    font-family: var(--font-heading);
+    font-family: var(--font-serif);
     font-size: 3rem;
+    font-weight: 400;
 }
 
 .section-header p {
-    color: var(--accent-gradient);
-    font-family: var(--font-heading);
-    letter-spacing: 2px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
 }
 
 .works-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
+    gap: 8vw;
 }
 
-/* 作品卡片悬浮特效 */
-.work-card {
-    position: relative;
+/* 作品图视差与遮罩特效 */
+.work-img-container {
+    width: 100%;
+    aspect-ratio: 3/4; /* 竖版图片更有时尚杂志感 */
     overflow: hidden;
-    border-radius: 15px;
-    aspect-ratio: 4/3;
-    group: hover;
+    position: relative;
 }
 
 .work-img {
     width: 100%;
-    height: 100%;
+    height: 120%; /* 高度大一点，留给视差滚动的空间 */
     background-size: cover;
     background-position: center;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
 }
 
 .work-card:hover .work-img {
-    transform: scale(1.05);
-    filter: brightness(0.6);
+    transform: scale(1.05) translateY(-5%); /* 配合下面JS的视差，加入放大感 */
+    filter: brightness(0.7);
 }
 
 .work-info {
-    position: absolute;
-    bottom: -100px;
-    left: 0;
-    width: 100%;
-    padding: 30px;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    transition: bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.work-card:hover .work-info {
-    bottom: 0;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .work-info h3 {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    margin-bottom: 5px;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .work-info p {
-    color: #FF9933;
-    font-size: 0.9rem;
-}
-
-/* --- 关于区块 --- */
-.about-section {
-    padding: 150px 10%;
-    text-align: center;
-    background: rgba(255,255,255,0.02);
-}
-
-.about-content h2 {
-    font-family: var(--font-heading);
-    font-size: 4rem;
-    margin-bottom: 30px;
-}
-
-.about-content p {
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 1.5rem;
     color: var(--text-muted);
-    line-height: 1.8;
+    font-size: 0.85rem;
 }
 
-/* --- 页脚联系方式 --- */
-footer {
-    padding: 150px 10% 50px;
+/* --- 底部联络 (全屏排版) --- */
+.contact-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    position: relative;
+    background: #000;
 }
 
-footer h2 {
-    font-family: var(--font-heading);
-    font-size: 3rem;
+.contact-content h2 {
+    font-size: 5vw;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1.1;
     margin-bottom: 20px;
 }
 
+.italic-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: #999;
+}
+
+.contact-content p {
+    color: var(--text-muted);
+    margin-bottom: 50px;
+}
+
 .email-link {
-    display: inline-block;
-    font-family: var(--font-heading);
-    font-size: 4vw;
+    font-family: var(--font-serif);
+    font-size: 3rem;
     color: var(--text-main);
     text-decoration: none;
-    margin-bottom: 60px;
-    transition: color 0.3s ease;
+    font-style: italic;
+    display: inline-block;
+    padding: 10px 20px;
 }
 
-.email-link:hover {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.socials {
+.footer-bottom {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    padding: 0 6%;
     display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 80px;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.8rem;
 }
 
 .socials a {
     color: var(--text-muted);
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
+    margin-left: 20px;
+    display: inline-block;
 }
 
-.socials a:hover {
-    color: #FF3366;
-}
-
-.copyright {
-    color: #444;
-    font-size: 0.8rem;
-}
-
-/* --- 滚动动画类 (JS 配合使用) --- */
+/* --- 滚动动画类 --- */
 .fade-up {
     opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), 
+                transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .fade-up.visible {
@@ -335,12 +364,10 @@ footer h2 {
     transform: translateY(0);
 }
 
-/* --- 响应式设计 --- */
 @media (max-width: 768px) {
-    .title { font-size: 12vw; }
-    .works-grid { grid-template-columns: 1fr; }
-    .about-content p { font-size: 1.1rem; }
-    .nav-links { display: none; /* 移动端可以考虑做汉堡菜单，这里简化处理 */ }
-    .cursor, .cursor-follower { display: none; /* 移动端隐藏自定义指针 */ }
+    .works-grid { grid-template-columns: 1fr; gap: 40px; }
+    .work-card { margin-top: 0 !important; }
+    .title { font-size: 15vw; }
+    .cursor, .cursor-follower { display: none; }
     * { cursor: auto; }
 }
